@@ -1,0 +1,474 @@
+[
+  {
+    "object": "block",
+    "type": "heading_1",
+    "heading_1": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "📈 Prime: DoorDash Somalia Pricing Lead - Progress Log"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "callout",
+    "callout": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Status: 🟢 Active | Repo: "
+          }
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "task0429-dev/Doordash-Somalia"
+          },
+          "annotations": {
+            "external": true,
+            "url": "https://github.com/task0429-dev/Doordash-Somalia"
+          },
+          "plain_text": "task0429-dev/Doordash-Somalia"
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": " | Branch: main (0cc2a9a) | Updated: "
+          }
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "2024-03-01"
+          }
+        }
+      ],
+      "icon": {
+        "type": "emoji",
+        "emoji": "📊"
+      },
+      "color": "green_background"
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "🧠 What I Did (Analysis + Setup)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "- Cloned repo: projects/Doordash-Somalia (main @ 0cc2a9a)\n- Key files inspected:"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 3,
+      "has_column_header": true,
+      "number_of_rows": 6,
+      "children": [
+        {
+          "object": "table_row",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "File"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "Status"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "Notes"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "table_row",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "backend/app/core/config.py"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "Minimal"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "DB/Redis only. No pricing defaults → ADD FIXED"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "table_row",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "backend/app/services/fee_calculator.py"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "✅ Live"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "base + per_km + surge + COD + sub override. Returns breakdown."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "table_row",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "backend/app/schemas/order.py"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "✅ Ready"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "Fee fields in OrderOut/OrderCreate"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "table_row",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "backend/app/models/order.py"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "✅ Persists"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "All fees stored on Order model"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "table_row",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "backend/tests/test_fees_subscription.py"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "✅ Tests Pass"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "No-sub, surge, free/fixed/expired sub, integration"
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Pricing already 80% MVP-aligned. COD-first. Sub override works. Tests cover all."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "🔄 What I'm Doing Right Now"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Add fixed-fee config toggle to config.py (MVP default: fixed 15k SOS)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Update fee_calculator.py: fixed_mode → ignore distance"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Somalia defaults: Fixed 15,000 SOS (~$25 USD), COD 1,000 SOS (2%)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "📈 Plan (Priority A-D)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "toggle",
+    "toggle": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "A) Pricing Config + Defaults (ETA 15m)"
+          }
+        }
+      ],
+      "children": [
+        {
+          "object": "block",
+          "type": "code",
+          "code": {
+            "rich_text": [
+              {
+                "type": "text",
+                "text": {
+                  "content": "# backend/app/core/config.py additions\nPRICING_FIXED_MODE = os.getenv(\"PRICING_FIXED_MODE\", \"true\").lower() == \"true\"\nPRICING_FIXED_FEE_SOS = int(os.getenv(\"PRICING_FIXED_FEE_SOS\", \"15000\"))\nPRICING_BASE_SOS = int(os.getenv(\"PRICING_BASE_SOS\", \"10000\"))\nPRICING_PER_KM_SOS = int(os.getenv(\"PRICING_PER_KM_SOS\", \"2000\"))\nPRICING_COD_SOS = int(os.getenv(\"PRICING_COD_SOS\", \"1000\"))\nPRICING_SURGE_DEFAULT = float(os.getenv(\"PRICING_SURGE_DEFAULT\", \"1.0\"))"
+                }
+              }
+            ],
+            "language": "python"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "🚧 Blockers & Next 3 Actions"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "numbered_list",
+    "numbered_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Implement config + fixed_mode in calculator"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "numbered_list",
+    "numbered_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Write ECONOMICS.md, commit to local branch"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "numbered_list",
+    "numbered_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Spawn subagent for test run + PR (if gh auth)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "ETA First Push: 30m (post-auth). Ping for GH token if needed."
+          }
+        }
+      ]
+    }
+  }
+]
