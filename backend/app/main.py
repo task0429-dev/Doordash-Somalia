@@ -2,9 +2,12 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 
+from app.api.admin import router as admin_router
+from app.api.menu import router as menu_router
 from app.api.orders import router as orders_router
 from app.core.config import APP_NAME
-from app.core.db import Base, engine
+from app.core.db import Base, check_db_connection, engine
+from app.core.supabase import get_supabase_public_config, has_supabase_server_config
 from app import models  # noqa: F401
 
 app = FastAPI(title=APP_NAME)
@@ -14,6 +17,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5176",
         "https://staging.taskenterprise.com",
         "https://taskenterprise.com",
     ],
@@ -38,11 +44,25 @@ async def add_security_headers(request: Request, call_next):
 @app.on_event("startup")
 def on_startup():
     Base.metadata.create_all(bind=engine)
+    check_db_connection()
 
 
 @app.get("/health")
 def health():
-    return {"ok": True, "service": "api", "status": "healthy"}
+    return {
+        "ok": True,
+        "service": "api",
+        "status": "healthy",
+        "database": "connected",
+        "supabase": {"configured": has_supabase_server_config()},
+    }
+
+
+@app.get("/api/config/public")
+def public_config():
+    return {"supabase": get_supabase_public_config()}
 
 
 app.include_router(orders_router, prefix="/api")
+app.include_router(menu_router, prefix="/api")
+app.include_router(admin_router, prefix="/api")

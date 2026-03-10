@@ -29,6 +29,7 @@ export function CheckoutMapPinForm({ hasSubscription }: Props) {
         subtotal_sos: pricing.subtotalSos,
         distance_km: 2,
         zone: 'mogadishu',
+        payment_method: 'COD',
       });
       setMessage('Order submitted with map-pin dropoff fields.');
     } catch (error) {

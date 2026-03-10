@@ -1,0 +1,10 @@
+.env
+backend/.env
+backend/.venv/
+apps/*/.env
+.openclaw/
+.codex-logs/
+**/node_modules/
+**/dist/
+**/__pycache__/
+*.pyc

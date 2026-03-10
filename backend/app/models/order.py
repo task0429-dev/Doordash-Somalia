@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.db import Base
 
@@ -31,6 +31,34 @@ class Order(Base):
 
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    customer = relationship("User", foreign_keys=[customer_id])
+    merchant = relationship("User", foreign_keys=[merchant_id])
+    courier = relationship("User", foreign_keys=[courier_id])
+
+    @property
+    def customer_email(self) -> str | None:
+        return self.customer.email if self.customer else None
+
+    @property
+    def customer_name(self) -> str | None:
+        return self.customer.full_name if self.customer else None
+
+    @property
+    def merchant_email(self) -> str | None:
+        return self.merchant.email if self.merchant else None
+
+    @property
+    def merchant_name(self) -> str | None:
+        return self.merchant.full_name if self.merchant else None
+
+    @property
+    def courier_email(self) -> str | None:
+        return self.courier.email if self.courier else None
+
+    @property
+    def courier_name(self) -> str | None:
+        return self.courier.full_name if self.courier else None
 
 
 class OrderStatusEvent(Base):

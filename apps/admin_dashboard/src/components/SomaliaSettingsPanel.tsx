@@ -13,7 +13,7 @@ export function SomaliaSettingsPanel() {
   const selected = useMemo(() => SOMALIA_LOCALES.find((item) => item.locale === locale)!, [locale]);
 
   return (
-    <section dir={selected.rtl ? 'rtl' : 'ltr'} style={{ border: '1px solid #ddd', padding: 12 }}>
+    <section dir={selected.rtl ? 'rtl' : 'ltr'} style={{ border: '1px solid var(--border)', padding: 16 }}>
       <h2>Somalia Locale & Subscription Controls</h2>
       <label>
         Locale:{' '}

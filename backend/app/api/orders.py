@@ -54,6 +54,8 @@ def create_customer_order(payload: OrderCreate, request: Request, db: Session = 
 
     customer = _user_by_email(db, payload.customer_email, "customer")
     merchant = _user_by_email(db, payload.merchant_email, "merchant")
+    payment_method = payload.payment_method.strip().upper() or "COD"
+    is_cod = payment_method == "COD"
 
     rule = db.query(PricingRule).filter(PricingRule.zone == payload.zone, PricingRule.active.is_(True)).first()
     if not rule:
@@ -61,14 +63,14 @@ def create_customer_order(payload: OrderCreate, request: Request, db: Session = 
     if not rule:
         raise HTTPException(status_code=400, detail="No active pricing rule")
 
-    fees = calculate_fees(payload.subtotal_sos, payload.distance_km, rule)
+    fees = calculate_fees(payload.subtotal_sos, payload.distance_km, rule, include_cod_fee=is_cod)
 
     order = Order(
         customer_id=customer.id,
         merchant_id=merchant.id,
         status="PLACED",
-        payment_method="COD",
-        payment_status="UNPAID",
+        payment_method=payment_method,
+        payment_status="UNPAID" if is_cod else "PAID",
         dropoff_address_text=payload.dropoff_address_text,
         subtotal_sos=fees["subtotal_sos"],
         delivery_fee_sos=fees["delivery_fee_sos"],
@@ -85,6 +87,30 @@ def create_customer_order(payload: OrderCreate, request: Request, db: Session = 
     db.commit()
     db.refresh(order)
     return order
+
+
+@router.get("/customer/orders", response_model=list[OrderOut])
+def list_customer_orders(customer_email: str = Query(...), db: Session = Depends(get_db)):
+    customer = _user_by_email(db, customer_email, "customer")
+    return (
+        db.query(Order)
+        .filter(Order.customer_id == customer.id)
+        .order_by(Order.created_at.desc())
+        .limit(50)
+        .all()
+    )
+
+
+@router.get("/merchant/orders", response_model=list[OrderOut])
+def list_merchant_orders(merchant_email: str = Query(...), db: Session = Depends(get_db)):
+    merchant = _user_by_email(db, merchant_email, "merchant")
+    return (
+        db.query(Order)
+        .filter(Order.merchant_id == merchant.id)
+        .order_by(Order.created_at.desc())
+        .limit(50)
+        .all()
+    )
 
 
 @router.post("/merchant/orders/{order_id}/accept", response_model=OrderOut)
@@ -184,6 +210,10 @@ def courier_deliver_order(order_id: int, courier_email: str = Query(...), db: Se
     order.delivered_at = datetime.utcnow()
     _add_event(db, order.id, "PICKED_UP", "DELIVERED", "courier", courier.id)
     order.status = "DELIVERED"
+
+    if order.payment_method != "COD":
+        _add_event(db, order.id, "DELIVERED", "COMPLETED", "system", courier.id)
+        order.status = "COMPLETED"
 
     _audit(db, "courier_deliver", "courier", courier.id, f"/courier/orders/{order_id}/deliver", 200, {"order_id": order_id})
 

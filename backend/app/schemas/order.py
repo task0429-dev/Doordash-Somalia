@@ -18,13 +18,20 @@ class OrderCreate(BaseModel):
     subtotal_sos: int = 0
     distance_km: float = 1.0
     zone: str = "mogadishu"
+    payment_method: str = "COD"
 
 
 class OrderOut(BaseModel):
     id: int
     customer_id: int
+    customer_email: EmailStr | None = None
+    customer_name: str | None = None
     merchant_id: int
+    merchant_email: EmailStr | None = None
+    merchant_name: str | None = None
     courier_id: int | None
+    courier_email: EmailStr | None = None
+    courier_name: str | None = None
     status: str
     payment_method: str
     payment_status: str
@@ -39,6 +46,7 @@ class OrderOut(BaseModel):
     assigned_at: datetime | None = None
     picked_up_at: datetime | None = None
     delivered_at: datetime | None = None
+    created_at: datetime | None = None
 
     class Config:
         from_attributes = True
