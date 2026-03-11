@@ -46,6 +46,8 @@ export function HomePage() {
   const topRated = getTopRatedRestaurants();
   const offers = getOfferRestaurants();
   const recentOrders = orderHistory.slice(0, 2);
+  const spotlightRestaurant = featuredRestaurants[0];
+  const quickReadoutRestaurants = featuredRestaurants.slice(1, 4);
 
   return (
     <div className="screen-stack home-screen">
@@ -55,10 +57,68 @@ export function HomePage() {
           <h1>{t('home.title', 'Crave-worthy food and daily essentials with a premium blue-hour feel.')}</h1>
           <p>{t('home.description', 'Browse polished Somali favorites, fast comfort food, and groceries in a single mobile-first flow.')}</p>
         </div>
+        <div className="hero-insight-strip">
+          <div className="hero-insight-card">
+            <strong>{featuredRestaurants.length}</strong>
+            <span>{t('home.openNowCount', 'Open now')}</span>
+          </div>
+          <div className="hero-insight-card">
+            <strong>{fastDelivery.length}</strong>
+            <span>{t('home.fastTrackCount', 'Fast lanes')}</span>
+          </div>
+          <div className="hero-insight-card">
+            <strong>{offers.length}</strong>
+            <span>{t('home.liveDealsCount', 'Live deals')}</span>
+          </div>
+        </div>
         <button className="search-prompt" onClick={() => navigate('/search')}>
           <span>{t('home.searchPrompt', 'Search restaurants, dishes, and essentials')}</span>
           <strong>{t('home.searchAction', 'Search')}</strong>
         </button>
+        {spotlightRestaurant ? (
+          <div className="hero-focus-grid">
+            <button className="hero-feature-card" onClick={() => navigate(`/restaurant/${spotlightRestaurant.id}`)}>
+              <div className="hero-feature-topline">
+                <span className="eyebrow light">{t('home.centerPick', 'Center-stage pick')}</span>
+                <span className="soft-badge subtle">{spotlightRestaurant.deliveryTime}</span>
+              </div>
+              <div className="hero-feature-copy">
+                <strong>{spotlightRestaurant.name}</strong>
+                <p>{translateText(spotlightRestaurant.heroNote)}</p>
+              </div>
+              <div className="hero-feature-meta">
+                <span className="hero-feature-chip">{translateText(spotlightRestaurant.district)}</span>
+                <span className="hero-feature-chip">★ {spotlightRestaurant.rating.toFixed(1)}</span>
+                <span className="hero-feature-chip">
+                  {spotlightRestaurant.primeEligible ? 'Prime' : formatSos(spotlightRestaurant.deliveryFeeSos)}
+                </span>
+              </div>
+            </button>
+            <article className="hero-readout-card">
+              <div className="hero-readout-topline">
+                <span className="eyebrow">{t('home.rightNow', 'Near you right now')}</span>
+                <button className="text-button" onClick={() => navigate('/search')}>
+                  {t('home.seeAll', 'See all')}
+                </button>
+              </div>
+              <div className="hero-readout-list">
+                {quickReadoutRestaurants.map((restaurant) => (
+                  <button
+                    key={restaurant.id}
+                    className="hero-readout-item"
+                    onClick={() => navigate(`/restaurant/${restaurant.id}`)}
+                  >
+                    <div className="hero-readout-copy">
+                      <strong>{restaurant.name}</strong>
+                      <p>{restaurant.cuisines.slice(0, 2).map(translateText).join(' · ')}</p>
+                    </div>
+                    <span className="hero-readout-tag">{restaurant.deliveryTime}</span>
+                  </button>
+                ))}
+              </div>
+            </article>
+          </div>
+        ) : null}
       </section>
 
       <PromoCarousel items={PROMO_BANNERS} onNavigate={navigate} />
